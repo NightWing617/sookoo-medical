@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SookooMedical - Affordable Medical Essentials</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #FDF8F2 0%, #CFF4E2 100%);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 91, 79, 0.1);
+        }
+        .cart-item-enter {
+            animation: cartItemEnter 0.3s ease-out forwards;
+        }
+        @keyframes cartItemEnter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-[#005B4F] flex items-center justify-center text-white font-bold text-xl">SM</div>
+                        <span class="ml-2 text-xl font-bold text-[#005B4F]">SookooMedical</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#home" class="border-[#005B4F] text-[#005B4F] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="#products" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Products</a>
+                        <a href="#how-it-works" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">How It Works</a>
+                        <a href="#contact" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button id="cart-button" class="p-1 rounded-full text-[#005B4F] hover:text-[#003D35] focus:outline-none relative">
+                        <span class="sr-only">View cart</span>
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-[#005B4F] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="sm:hidden hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#home" class="bg-[#CFF4E2] border-[#005B4F] text-[#005B4F] block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="#products" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Products</a>
+                <a href="#how-it-works" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">How It Works</a>
+                <a href="#contact" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Contact</a>
+                <div class="pt-4 pb-3 border-t border-gray-200">
+                    <div class="flex items-center px-4">
+                        <button id="mobile-cart-button" class="p-1 rounded-full text-[#005B4F] hover:text-[#003D35] focus:outline-none relative">
+                            <span class="sr-only">View cart</span>
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="mobile-cart-count" class="absolute -top-1 -right-1 bg-[#005B4F] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </button>
+                        <span class="ml-3 text-sm font-medium text-gray-700">Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-medium text-[#005B4F]">Your Order</h2>
+                <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="space-y-4">
+                <!-- Cart items will be added here dynamically -->
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-shopping-cart text-3xl mb-2"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            
+            <div id="cart-summary" class="mt-8 border-t border-gray-200 pt-6 hidden">
+                <div class="flex justify-between text-lg font-medium mb-4">
+                    <span>Total:</span>
+                    <span id="cart-total">R0.00</span>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="pickup-location" class="block text-sm font-medium text-gray-700 mb-1">Select Pickup Location</label>
+                    <select id="pickup-location" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#005B4F]">
+                        <option value="">-- Select a location --</option>
+                        <option value="Dr Naidoo's Practice, Phoenix">Dr Naidoo's Practice, Phoenix</option>
+                        <option value="Dr Dube's Practice, PMB">Dr Dube's Practice, PMB</option>
+                        <option value="Dr Smith's Clinic, Durban">Dr Smith's Clinic, Durban</option>
+                        <option value="Dr Khan's Surgery, Johannesburg">Dr Khan's Surgery, Johannesburg</option>
+                    </select>
+                </div>
+                
+                <button id="checkout-button" class="w-full bg-[#005B4F] text-white py-3 px-4 rounded-md hover:bg-[#003D35] transition duration-200 flex items-center justify-center">
+                    <i class="fas fa-lock mr-2"></i> Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-gradient">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+                <div class="md:flex md:items-center md:justify-between">
+                    <div class="md:w-1/2 mb-10 md:mb-0">
+                        <h1 class="text-4xl md:text-5xl font-bold text-[#005B4F] mb-4">Affordable Medical Essentials</h1>
+                        <p class="text-xl text-gray-700 mb-8">Delivered to your doctor's practice for convenient pickup</p>
+                        <div class="flex space-x-4">
+                            <a href="#products" class="bg-[#005B4F] text-white px-6 py-3 rounded-md hover:bg-[#003D35] transition duration-200">Shop Now</a>
+                            <a href="#how-it-works" class="border border-[#005B4F] text-[#005B4F] px-6 py-3 rounded-md hover:bg-[#FDF8F2] transition duration-200">How It Works</a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="relative w-full max-w-md">
+                            <div class="absolute -top-6 -left-6 w-32 h-32 bg-[#CFF4E2] rounded-full opacity-70"></div>
+                            <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-[#CFF4E2] rounded-full opacity-70"></div>
+                            <div class="relative bg-white p-8 rounded-xl shadow-lg">
+                                <div class="flex items-center justify-center mb-6">
+                                    <div class="w-16 h-16 rounded-full bg-[#005B4F] flex items-center justify-center text-white text-2xl">
+                                        <i class="fas fa-pills"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center text-[#005B4F] mb-4">Popular Products</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-8 h-8 bg-[#FDF8F2] rounded-full flex items-center justify-center text-[#005B4F]">
+                                            <i class="fas fa-capsules text-sm"></i>
+                                        </div>
+                                        <span class="text-sm">Panado</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-8 h-8 bg-[#FDF8F2] rounded-full flex items-center justify-center text-[#005B4F]">
+                                            <i class="fas fa-syringe text-sm"></i>
+                                        </div>
+                                        <span class="text-sm">Syringes</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-8 h-8 bg-[#FDF8F2] rounded-full flex items-center justify-center text-[#005B4F]">
+                                            <i class="fas fa-band-aid text-sm"></i>
+                                        </div>
+                                        <span class="text-sm">Bandages</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-8 h-8 bg-[#FDF8F2] rounded-full flex items-center justify-center text-[#005B4F]">
+                                            <i class="fas fa-hand-holding-medical text-sm"></i>
+                                        </div>
+                                        <span class="text-sm">Gloves</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trusted By Section -->
+        <section class="bg-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-center text-gray-500 text-sm uppercase font-semibold tracking-wider mb-8">Trusted by South African GPs</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                    <div class="flex justify-center">
+                        <div class="h-12 flex items-center">
+                            <span class="text-xl font-bold text-[#005B4F]">Dr Naidoo</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="h-12 flex items-center">
+                            <span class="text-xl font-bold text-[#005B4F]">Dr Dube</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="h-12 flex items-center">
+                            <span class="text-xl font-bold text-[#005B4F]">Dr Smith</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="h-12 flex items-center">
+                            <span class="text-xl font-bold text-[#005B4F]">Dr Khan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="bg-[#FDF8F2] py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:text-center">
+                    <h2 class="text-3xl font-bold text-[#005B4F] mb-4">About SookooMedical</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-700">
+                        We're revolutionizing access to medical supplies by partnering with local doctors to serve as convenient pickup points. 
+                        Our mission is to make essential healthcare products affordable and accessible to all South Africans.
+                    </p>
+                </div>
+
+                <div class="mt-16 grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <div class="w-16 h-16 bg-[#CFF4E2] rounded-full flex items-center justify-center text-[#005B4F] mb-6">
+                            <i class="fas fa-hand-holding-heart text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#005B4F] mb-3">Affordable Prices</h3>
+                        <p class="text-gray-600">
+                            We work directly with manufacturers to bring you quality medical products at prices you can afford.
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <div class="w-16 h-16 bg-[#CFF4E2] rounded-full flex items-center justify-center text-[#005B4F] mb-6">
+                            <i class="fas fa-map-marker-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#005B4F] mb-3">Convenient Locations</h3>
+                        <p class="text-gray-600">
+                            Pick up your order at a doctor's practice near you, eliminating shipping costs and delays.
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <div class="w-16 h-16 bg-[#CFF4E2] rounded-full flex items-center justify-center text-[#005B4F] mb-6">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#005B4F] mb-3">Quality Guaranteed</h3>
+                        <p class="text-gray-600">
+                            All our products meet strict quality standards and are sourced from reputable suppliers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-[#005B4F] mb-4">How It Works</h2>
+                    <p class="max-w-2xl mx-auto text-lg text-gray-700">
+                        Getting your medical essentials has never been easier. Just follow these simple steps:
+                    </p>
+                </div>
+
+                <div class="relative">
+                    <!-- Timeline line -->
+                    <div class="hidden md:block absolute left-1/2 top-0 h-full w-1 bg-[#CFF4E2] transform -translate-x-1/2"></div>
+                    
+                    <div class="space-y-12 md:space-y-0">
+                        <!-- Step 1 -->
+                        <div class="relative md:flex md:items-center md:justify-between">
+                            <div class="md:w-5/12 mb-8 md:mb-0 md:pr-12 text-right">
+                                <h3 class="text-2xl font-semibold text-[#005B4F] mb-3">1. Browse & Order</h3>
+                                <p class="text-gray-600">
+                                    Select from our wide range of medical products and add them to your cart.
+                                </p>
+                            </div>
+                            <div class="hidden md:flex md:items-center md:justify-center md:w-2/12">
+                                <div class="w-16 h-16 bg-[#005B4F] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                                    1
+                                </div>
+                            </div>
+                            <div class="md:w-5/12 md:pl-12">
+                                <div class="bg-[#FDF8F2] p-6 rounded-lg shadow-sm">
+                                    <div class="flex items-center justify-center mb-4">
+                                        <i class="fas fa-laptop text-4xl text-[#005B4F]"></i>
+                                    </div>
+                                    <p class="text-center text-gray-700">
+                                        Easy online ordering from any device
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="relative md:flex md:items-center md:justify-between">
+                            <div class="md:w-5/12 order-3 md:pl-12">
+                                <div class="bg-[#FDF8F2] p-6 rounded-lg shadow-sm">
+                                    <div class="flex items-center justify-center mb-4">
+                                        <i class="fas fa-credit-card text-4xl text-[#005B4F]"></i>
+                                    </div>
+                                    <p class="text-center text-gray-700">
+                                        Secure payment via PayFast or Yoco
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex md:items-center md:justify-center md:w-2/12 order-2">
+                                <div class="w-16 h-16 bg-[#005B4F] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                                    2
+                                </div>
+                            </div>
+                            <div class="md:w-5/12 order-1 mb-8 md:mb-0 md:pr-12 text-right">
+                                <h3 class="text-2xl font-semibold text-[#005B4F] mb-3">2. Secure Payment</h3>
+                                <p class="text-gray-600">
+                                    Pay safely using our trusted payment partners. Your transaction is always secure.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="relative md:flex md:items-center md:justify-between">
+                            <div class="md:w-5/12 mb-8 md:mb-0 md:pr-12 text-right">
+                                <h3 class="text-2xl font-semibold text-[#005B4F] mb-3">3. Collect at Your Doctor</h3>
+                                <p class="text-gray-600">
+                                    We'll notify you via WhatsApp when your order is ready for pickup at your selected location.
+                                </p>
+                            </div>
+                            <div class="hidden md:flex md:items-center md:justify-center md:w-2/12">
+                                <div class="w-16 h-16 bg-[#005B4F] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                                    3
+                                </div>
+                            </div>
+                            <div class="md:w-5/12 md:pl-12">
+                                <div class="bg-[#FDF8F2] p-6 rounded-lg shadow-sm">
+                                    <div class="flex items-center justify-center mb-4">
+                                        <i class="fas fa-clinic-medical text-4xl text-[#005B4F]"></i>
+                                    </div>
+                                    <p class="text-center text-gray-700">
+                                        Convenient pickup during your next visit
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Catalog Section -->
+        <section id="products" class="py-16 bg-[#FDF8F2]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#005B4F] mb-4">Our Products</h2>
+                    <p class="max-w-2xl mx-auto text-lg text-gray-700">
+                        Quality medical essentials at affordable prices
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product 1 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-pills text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Panado Tablets</h3>
+                            <p class="text-gray-600 text-sm mb-4">24 tablets | 500mg</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R45.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="1" data-name="Panado Tablets" data-price="45.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-syringe text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Disposable Syringes</h3>
+                            <p class="text-gray-600 text-sm mb-4">10ml | Box of 100</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R129.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="2" data-name="Disposable Syringes" data-price="129.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-band-aid text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Surgical Bandages</h3>
+                            <p class="text-gray-600 text-sm mb-4">5cm x 5m | Box of 12</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R89.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="3" data-name="Surgical Bandages" data-price="89.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-hand-holding-medical text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Latex Gloves</h3>
+                            <p class="text-gray-600 text-sm mb-4">Medium | Box of 100</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R79.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="4" data-name="Latex Gloves" data-price="79.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 5 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-thermometer text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Digital Thermometer</h3>
+                            <p class="text-gray-600 text-sm mb-4">Fast reading | Waterproof</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R149.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="5" data-name="Digital Thermometer" data-price="149.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 6 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-prescription-bottle text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Vitamin C Capsules</h3>
+                            <p class="text-gray-600 text-sm mb-4">1000mg | 60 capsules</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R119.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="6" data-name="Vitamin C Capsules" data-price="119.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 7 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-allergies text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Antihistamine Tablets</h3>
+                            <p class="text-gray-600 text-sm mb-4">10mg | 30 tablets</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R65.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="7" data-name="Antihistamine Tablets" data-price="65.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 8 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card transition duration-300">
+                        <div class="h-48 bg-[#CFF4E2] flex items-center justify-center">
+                            <i class="fas fa-burn text-6xl text-[#005B4F]"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-[#005B4F] mb-2">Burn Cream</h3>
+                            <p class="text-gray-600 text-sm mb-4">50g tube | Soothing relief</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-[#005B4F]">R59.99</span>
+                                <button class="add-to-cart bg-[#005B4F] text-white px-4 py-2 rounded-md hover:bg-[#003D35] transition duration-200" data-id="8" data-name="Burn Cream" data-price="59.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#005B4F] mb-4">Contact Us</h2>
+                    <p class="max-w-2xl mx-auto text-lg text-gray-700">
+                        Have questions? We're here to help.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <div class="bg-[#FDF8F2] p-8 rounded-xl shadow-sm mb-8">
+                            <h3 class="text-xl font-semibold text-[#005B4F] mb-4">Get in Touch</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-[#CFF4E2] flex items-center justify-center text-[#005B4F]">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">Phone</p>
+                                        <p class="text-sm text-gray-900">+27 12 345 6789</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-[#CFF4E2] flex items-center justify-center text-[#005B4F]">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">Email</p>
+                                        <p class="text-sm text-gray-900">info@sookoomedical.co.za</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-[#CFF4E2] flex items-center justify-center text-[#005B4F]">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">WhatsApp</p>
+                                        <p class="text-sm text-gray-900">+27 12 345 6789</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#FDF8F2] p-8 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-semibold text-[#005B4F] mb-4">Business Hours</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Monday - Friday</span>
+                                    <span class="font-medium">8:00 AM - 5:00 PM</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Saturday</span>
+                                    <span class="font-medium">9:00 AM - 1:00 PM</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Sunday</span>
+                                    <span class="font-medium">Closed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-[#FDF8F2] p-8 rounded-xl shadow-sm h-full">
+                            <h3 class="text-xl font-semibold text-[#005B4F] mb-4">Our Locations</h3>
+                            <div class="h-64 md:h-96 rounded-lg overflow-hidden">
+                                <!-- Placeholder for map -->
+                                <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                    <i class="fas fa-map-marker-alt text-4xl mb-2"></i>
+                                    <p>Map would be displayed here</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 space-y-3">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-[#CFF4E2] flex items-center justify-center text-[#005B4F] mt-1">
+                                        <i class="fas fa-map-pin text-xs"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Dr Naidoo's Practice</p>
+                                        <p class="text-xs text-gray-600">123 Medical Street, Phoenix, Durban</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-[#CFF4E2] flex items-center justify-center text-[#005B4F] mt-1">
+                                        <i class="fas fa-map-pin text-xs"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium">Dr Dube's Practice</p>
+                                        <p class="text-xs text-gray-600">456 Health Avenue, Pietermaritzburg</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#005B4F] text-white pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">SookooMedical</h3>
+                    <p class="text-sm text-[#CFF4E2]">
+                        Affordable medical essentials delivered to your doctor's practice for convenient pickup.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">Home</a></li>
+                        <li><a href="#products" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">Products</a></li>
+                        <li><a href="#how-it-works" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">How It Works</a></li>
+                        <li><a href="#contact" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">Privacy Policy</a></li>
+                        <li><a href="#" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">Terms of Service</a></li>
+                        <li><a href="#" class="text-sm text-[#CFF4E2] hover:text-white transition duration-200">Shipping Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="h-8 w-8 rounded-full bg-[#003D35] flex items-center justify-center text-white hover:bg-[#002822] transition duration-200">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="h-8 w-8 rounded-full bg-[#003D35] flex items-center justify-center text-white hover:bg-[#002822] transition duration-200">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="h-8 w-8 rounded-full bg-[#003D35] flex items-center justify-center text-white hover:bg-[#002822] transition duration-200">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-xs text-[#CFF4E2]">
+                        Powered by <a href="#" class="hover:text-white transition duration-200">Khedun Digital</a>
+                    </p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-[#003D35] text-center text-sm text-[#CFF4E2]">
+                <p>&copy; 2023 SookooMedical. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Order Confirmation Modal -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 overflow-hidden">
+            <div class="bg-[#005B4F] p-6 text-white">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-semibold">Order Confirmation</h3>
+                    <button id="close-confirmation" class="text-white hover:text-[#CFF4E2]">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-4">
+                        <i class="fas fa-check text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-medium text-gray-900 mb-2">Thank you for your order!</h4>
+                    <p class="text-gray-600">You will receive a WhatsApp once your order is ready for pickup.</p>
+                </div>
+                
+                <div id="order-summary" class="mb-6">
+                    <!-- Order summary will be added here dynamically -->
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4">
+                    <button id="continue-shopping" class="w-full bg-[#005B4F] text-white py-2 px-4 rounded-md hover:bg-[#003D35] transition duration-200">
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('mobile-cart-count').textContent = count;
+        }
+        
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartSummary = document.getElementById('cart-summary');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-shopping-cart text-3xl mb-2"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                cartSummary.classList.add('hidden');
+                return;
+            }
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'flex justify-between items-center border-b border-gray-200 pb-4 cart-item-enter';
+                cartItem.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-16 h-16 bg-[#FDF8F2] rounded-md flex items-center justify-center text-[#005B4F] mr-4">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">${item.name}</h4>
+                            <p class="text-sm text-gray-600">R${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <button class="decrease-quantity w-8 h-8 border border-gray-300 rounded-md flex items-center justify-center text-gray-600 hover:bg-gray-100" data-index="${index}">
+                            <i class="fas fa-minus text-xs"></i>
+                        </button>
+                        <span class="mx-2 text-sm font-medium">${item.quantity}</span>
+                        <button class="increase-quantity w-8 h-8 border border-gray-300 rounded-md flex items-center justify-center text-gray-600 hover:bg-gray-100" data-index="${index}">
+                            <i class="fas fa-plus text-xs"></i>
+                        </button>
+                        <button class="remove-item ml-4 text-red-500 hover:text-red-700" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                cartItemsContainer.appendChild(cartItem);
+            });
+            
+            document.getElementById('cart-total').textContent = `R${total.toFixed(2)}`;
+            cartSummary.classList.remove('hidden');
+            
+            // Add event listeners to quantity buttons
+            document.querySelectorAll('.decrease-quantity').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = e.target.closest('button').dataset.index;
+                    if (cart[index].quantity > 1) {
+                        cart[index].quantity--;
+                    } else {
+                        cart.splice(index, 1);
+                    }
+                    saveCart();
+                });
+            });
+            
+            document.querySelectorAll('.increase-quantity').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = e.target.closest('button').dataset.index;
+                    cart[index].quantity++;
+                    saveCart();
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = e.target.closest('button').dataset.index;
+                    cart.splice(index, 1);
+                    saveCart();
+                });
+            });
+        }
+        
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCartItems();
+        }
+        
+        // Add to cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                const name = e.target.dataset.name;
+                const price = parseFloat(e.target.dataset.price);
+                
+                // Check if item already in cart
+                const existingItem = cart.find(item => item.id === id);
+                
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        quantity: 1
+                    });
+                }
+                
+                saveCart();
+                
+                // Show cart sidebar if it's closed
+                if (cartSidebar.classList.contains('translate-x-full')) {
+                    cartSidebar.classList.remove('translate-x-full');
+                    document.body.classList.add('overflow-hidden');
+                }
+                
+                // Add animation to button
+                e.target.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
+                e.target.classList.add('bg-green-600');
+                e.target.classList.remove('bg-[#005B4F]', 'hover:bg-[#003D35]');
+                
+                setTimeout(() => {
+                    e.target.innerHTML = 'Add to Cart';
+                    e.target.classList.remove('bg-green-600');
+                    e.target.classList.add('bg-[#005B4F]', 'hover:bg-[#003D35]');
+                }, 2000);
+            });
+        });
+        
+        // Cart sidebar toggle
+        const cartButton = document.getElementById('cart-button');
+        const mobileCartButton = document.getElementById('mobile-cart-button');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCart = document.getElementById('close-cart');
+        
+        cartButton.addEventListener('click', () => {
+            cartSidebar.classList.toggle('translate-x-full');
+            document.body.classList.toggle('overflow-hidden');
+        });
+        
+        mobileCartButton.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            cartSidebar.classList.toggle('translate-x-full');
+            document.body.classList.toggle('overflow-hidden');
+        });
+        
+        closeCart.addEventListener('click', () => {
+            cartSidebar.classList.add('translate-x-full');
+            document.body.classList.remove('overflow-hidden');
+        });
+        
+        // Checkout button
+        const checkoutButton = document.getElementById('checkout-button');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const closeConfirmation = document.getElementById('close-confirmation');
+        const continueShopping = document.getElementById('continue-shopping');
+        const orderSummary = document.getElementById('order-summary');
+        
+        checkoutButton.addEventListener('click', () => {
+            const pickupLocation = document.getElementById('pickup-location').value;
+            
+            if (!pickupLocation) {
+                alert('Please select a pickup location');
+                return;
+            }
+            
+            // Create order summary
+            let summaryHTML = `
+                <div class="mb-4">
+                    <h5 class="text-sm font-medium text-gray-500 mb-1">Pickup Location</h5>
+                    <p class="text-gray-900">${pickupLocation}</p>
+                </div>
+                <div class="border-t border-gray-200 pt-4 mb-4">
+                    <h5 class="text-sm font-medium text-gray-500 mb-2">Order Items</h5>
+                    <div class="space-y-2">
+            `;
+            
+            cart.forEach(item => {
+                summaryHTML += `
+                    <div class="flex justify-between">
+                        <span>${item.name} × ${item.quantity}</span>
+                        <span>R${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            summaryHTML += `
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 pt-4 flex justify-between font-medium">
+                    <span>Total</span>
+                    <span>R${total.toFixed(2)}</span>
+                </div>
+            `;
+            
+            orderSummary.innerHTML = summaryHTML;
+            
+            // In a real implementation, you would send the order data to your backend
+            // For this demo, we'll just simulate it
+            simulateCheckout();
+        });
+        
+        function simulateCheckout() {
+            // Show confirmation modal
+            confirmationModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            
+            // In a real implementation, you would:
+            // 1. Send the order data to your backend
+            // 2. Process payment (redirect to PayFast/Yoco)
+            // 3. On successful payment, clear the cart and show confirmation
+            
+            // For demo purposes, we'll just clear the cart after a delay
+            setTimeout(() => {
+                cart = [];
+                saveCart();
+                cartSidebar.classList.add('translate-x-full');
+            }, 1000);
+        }
+        
+        closeConfirmation.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        });
+        
+        continueShopping.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        });
+        
+        // Initialize cart on page load
+        updateCartCount();
+        renderCartItems();
+    </script>
+</body>
+</html>
